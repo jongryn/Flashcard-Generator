@@ -2,218 +2,70 @@
 // Created: Aug. 29, 2017 5:00 PM
 // Author: Jonathan Gryn
 // Revisions: Jon (8/22/17) - Added JS
+//            Jon (9/6/17) - 
 */
 
-var fs = require("fs");
-var inquirer = require("inquire");
-var input2 = process.argv[3].toLowerCase();
-var input3 = process.argv[4];
-var input4 = process.argv[5];
+// Import the flash cards constructor implementations
+var flashCards = require('./flashCards.js');
 
-function clozeFunction() {
-    if (input2 === "first-add" && input4 === undefined) {
+/*
+*
+* Basic Flashcard Tests
+* 
+*/
 
-        var count = 0;
-        var cardArr = [];
+var firstPresident = new flashCards.BasicCard('WHo was the first president of the United States?', 'George Washingotn');
+console.log(firstPresident.front);
+console.log(firstPresident.back);
+console.log('-----------------------------');
 
-        function CreatedCard(cloze, partial) {
-            this.cloze = close;
-            this.partial = " ..." + partial;
-            this.full = cloze + " " + partial;
-        }
+var nowPresident = new flashCards.BasicCard('Who is the current president of the United States?', 'Donald Trump');
+console.log(nowPresident.front);
+console.log(nowPresident.back);
+console.log('-----------------------------');
 
-        var getInfo = function() {
-            if (count < parseInt(input3)) {
-                inquirer.prompt([{
-                    name: "cloze",
-                    message: "What is the cloze deletion of the flashcard?"
-                }, {
-                    name: "partial",
-                    message: "What is the partial text of the flashcard?"
-                }]).then(function(answers) {
-                    var card = new CreateCard(answers.cloze, answers.partial, answers.full);
-                    cardArr.push(card);
-                    count++;
+var oscarWinner = new flashCards.BasicCard('What moviewont he Oscar for best picture at the 2016 Academy Awards?', 'Moonlight');
+console.log(oscarWinner.front);
+console.log(oscarWinner.back);
+console.log('-----------------------------');
 
-                    getInfo();
-                });
-            } else {
-                fs.appendFile("cloze.Log.txt", JSON.stringify(cardArr), function(err) {
-                    
-                    // If an error was experience we say it.
-                    if (err) {
-                        console.log(err);
-                    }
-                    // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+var nextOlympics = new flashCards.BasicCard('What city will host the next winter Olympics games in 2018?', 'PyeongChang, South Korea');
+console.log(nextOlympics.front);
+console.log(nextOlympics.back);
+console.log('-----------------------------');
 
-                });
-            };
-        };
+/*
+*
+* Cloze-Deleted Flashcard Tests
+*
+*/
 
-        getInfo();
-    } else if (input2 === "random" && input4 === undefined) {
-        function CreatedCard(cloze, partial) {
-            this.cloze = cloze;
-            this.partial = " ..." + partial;
-            this.full = cloze + " " + partial;
-        }
+firstPresident = new flashCards.ClozeCard('George Washington was the first president of the United States.', 'George Washington');
+console.log(firstPresident.full);
+console.log(firstPresident.cloze);
+console.log(firstPresident.partial);
+console.log('-----------------------------');
 
-        fs.readFile("clozeLog.txt", "utf8", function(err, data) {
-            if (err) {
-                console.log(err);
+nowPresident = new flashCards.ClozeCard('Donal Trump is the current president of the Untied States.', 'Donald Trump');
+console.log(nowPresident.full);
+console.log(nowPresident.cloze);
+console.log(nowPresident.partial);
+console.log('-----------------------------');
 
-            } else {
-                var cardArr = JSON.parse(data);
+oscarWinner = new flashCards.ClozeCard('Moonlight won the Oscar for the best picture at the 2015 Academy Awards.', 'Moonlight');
+console.log(oscarWinner.full);
+console.log(oscarWinner.cloze);
+console.log(oscarWinner.partial);
+console.log('-----------------------------');
 
-                // console.log(cardArr);
-                var printCounter = 0;
+var nextOlympics = new flashCards.ClozeCard('PyeongChang, South Korea will host the next winter Olympic games in 2018', 'PyeongChang');
+console.log(nextOlympics.full);
+console.log(nextOlympics.cloze);
+console.log(nextOlympics.partial);
+console.log('-----------------------------');
 
-                function printCount() {
-                    if (printCounter <= cardArr.length) {
-                        printFront();
-                        printCounter++;
-                        setTimeout(function() { printCount() }, 6000);
-                    }
-                };
-
-                function printFront() {
-                    var randomCard = Math.floor(Math.random() * (cardArr.length));
-
-                    console.log(" ");
-                    console.log("------------------");
-
-                    console.log("Finish this sentence: " + cardArr[randomCard].partial);
-                    setTimeout(function() { console.log("Answer: " + cardArr[randomCard].cloze), console.log("Full Answer: " + cardArr[randomCard].full) }, 5000);
-                    setTimeout(function() { console.log("------------------"), console.log(" "), cardArr.splice(randomCard, 1); }, 5100); 
-                };
-
-                printCount();
-            }
-        });
-    } else if (input2 === "add" && input4 === undefined) {
-        var count = 0;
-        var cardArr = [];
-        var parse;
-
-        function CreatedCard(cloze, partial) {
-            this.cloze = cloze;
-            this.partial = " ..." + partial;
-            this.full = cloze + " " + partial;
-        }
-        var getInfo = function() {
-
-            if (count < parseInt(input3)) {
-                inquirer.prompt([{
-                    name: "cloze",
-                    message: "what is the cloze deletion of the flashcard?"
-                }, {
-                    name: "partial",
-                    message: "What is the partial text of the flashcard?"
-                }]).then(function(answers) {
-
-                    var card = new CreateCard(answers.cloze, answers.partial, answer.full);
-
-                    cardArr.push(card);
-                    count++;
-                    
-                    getInfo();
-                });
-            } else {
-
-                // console.log(parse);
-                var wow = JSON.parse(parse);
-
-                // console.log(wow);
-                cardArr.push.apply(cardArr, wow);
-
-                // console.log(cardArr);
-
-                fs.writeFile("clozeLog.txt", JSON.stringify(cardArr), function(err) {
-
-                    // If an error was experienced we say it.
-                    if(err) {
-                        console.log(err);
-                    };
-
-                    // If not error is experienced, we'll log the phrase "Content Added" to our node console.
-
-                });
-            };
-        };
-
-        getInfo();
-
-        fs.readFile("clozeLog.txt", "utf8", function(err, data) {
-
-            if (err) {
-                console.log(err);
-            } else {
-
-                // console.log(data);
-                parse = data;
-            };
-        });
-    } else if (input2 === "read" && input3 === "cloze") {
-
-        var index = parseInt(input4) - 1;
-
-        var printFront = function() {
-
-            fs.readFile("clozeLog.txt", "utf8", function(err, data) {
-                if(err) {
-                    console.log(err);
-                } else {
-                    var parsed = JSON.parse(data);
-                    console.log(" ");
-                    console.log("------------------");
-                    console.log("Cloze text: " + parsed[index].cloze);
-                    console.log("------------------");
-                    console.log(" ");
-                }
-            });
-        };
-
-        printFront();
-
-    } else if (input2 === "read" && input3 === "partial") {
-        var index = parseInt(input4) - 1;
-        var printBack = function() {
-            fs.readFile("clozeLog.txt", "utf8", function(err, data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var parsed = JSON.parse(data);
-                    console.log(" ");
-                    console.log("------------------");
-                    console.log("Partial text: " + parsed[index].partial);
-                    console.log("------------------");
-                    console.log(" ");
-                }
-            });
-        };
-
-        printBack();
-    } else if (input2 === "read" && input3 === "full") {
-        var index = parseInt(input4) - 1;
-        var printBack = function() {
-            fs.readFile("clozeLog.txt", "utf8", function(err, data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var parsed = JSON.parse(data);
-                    console.log(" ");
-                    console.log("------------------");
-                    console.log("Full text: " + parsed[index].full);
-                    console.log("------------------");
-                    console.log(" ");
-                }
-            });
-        };
-
-        printBack();
-    } else {
-        console.log("This is not a valid command! Please try again.");
-    };
-};
-
-module.exports = clozeFunction;
+var failedCard = new flashCards.ClozeCard('This text will not include the clozed-deletion...', 'TEST');
+console.log(failedCard.full);
+console.log(failedCard.cloze);
+console.log(failedCard.partial);
+console.log('-----------------------------');
