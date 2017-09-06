@@ -2,7 +2,7 @@
 // Created: Aug. 29, 2017 5:00 PM
 // Author: Jonathan Gryn
 // Revisions: Jon (8/22/17) - Added JS
-//            Jon (9/6/17) - 
+//            Jon (9/6/17) - Redid basic and cloze cards
 */
 
 // Import the flash cards constructor implementations
