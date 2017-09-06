@@ -6,12 +6,13 @@
 
 var fs = require("fs");
 var inquirer = require("inquirer");
-var input2 = process.argv[3].toLowerCase();
+var input2 = process.argv[3];
 var input3 = process.argv[4];
 var input4 = process.argv[5];
 
 function basicFunction() {
-    if (input2 === "ranodm" && input4 === undefined) {
+    console.log('test');
+    if (input2 === "random" && input4 === undefined) {
         function CreateCard(front, back) {
             this.front = front;
             this.back = back;
@@ -49,7 +50,8 @@ function basicFunction() {
         });
 
         // console.log(parseInt(input2));
-    } else (input2 === "first-add" && input4 === undefined) {
+    } else if (input2 === "first-add" && input4 === undefined) {
+
         var count = 0;
         var cardArr = [];
 
@@ -140,13 +142,21 @@ function basicFunction() {
                     }
                 })
             
-            } else if (input2 === "read" && input3 === "front") {
+            } 
+            
+            if (input2 === "read" && input3 === "front") {
+
                 var index = praseInt(input4) - 1;
+
                 var printFront = function() {
+
                     fs.readFile("log.txt", "utf8", function (err,data){
+
                         if (err) {
+
                             console.log(err);
                         } else {
+
                             var parsed = JSON.parse(data);
                             console.log(" ");;
                             console.log("------------------");
@@ -183,5 +193,3 @@ function basicFunction() {
 
         module.exports = basicFunction
     }
-
-}
