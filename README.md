@@ -3,6 +3,22 @@
 Advanced JavaScript Assignment: Cloze Constructors
 Overview
 
+Install
+
+To install the application, first clone this repository:
+
+git clone git@github.com:jongryn/Flashcard-Generator.git
+
+Then install the inquirer package for command line interaction.
+
+npm install inquirer
+
+Run
+
+To run the game execute the following command:
+
+node BasicCard.js
+
 Link: https://jongryn.github.io/Flashcard-Generator/
 
 In this week's assignment, you will create the backend for a basic flashcard application.
